@@ -11,13 +11,10 @@ export default class Search extends Component {
     const id = "search-autocomplete";
     const label = "Pick-up Location";
     const placeholder = "city, airport, station, region, district…";
-    const getA11yStatusMessage = "No results found";
-    const items = Array.from(COUNTRIES, x => x.name);
 
     return (
       <Downshift
         onChange={this._onChange}
-        getA11yStatusMessage = { ()=> {return getA11yStatusMessage}}
         render={({
           getInputProps,
           getItemProps,
@@ -26,41 +23,64 @@ export default class Search extends Component {
           inputValue,
           selectedItem,
           highlightedIndex,
+          itemCount
         }) => (
           <div>
             <label {...getLabelProps()}>{label}</label>
             <input {...getInputProps({placeholder})} />
             {isOpen && inputValue.length > 1 ? (
               <div style={{border: '1px solid #ccc'}}>
-                {items
-                  .filter(
-                    i =>
-                      !inputValue ||
-                      i.toLowerCase().includes(inputValue.toLowerCase()),
-                  )
-                  .map((item, index) => {
-                    if (index < 6) {
-                      return (
-                        <div
-                          {...getItemProps({item})}
-                          key={item}
-                          style={{
-                            backgroundColor:
-                              highlightedIndex === index ? 'gray' : 'white',
-                            fontWeight: selectedItem === item ? 'bold' : 'normal',
-                          }}
-                        >
-                          {item}
-                        </div>
-                      )}
-                    else
-                      return null;
-                  })}
+                {this._renderDropdown(inputValue, getItemProps, highlightedIndex, selectedItem)}
               </div>
             ) : null}
           </div>
         )}
       />
     )
+  }
+
+  _renderNoResults() {
+    const noResultsText = "No results found";
+
+    return (
+      <div style={{
+        backgroundColor: 'white',
+      }}>
+        {noResultsText}
+      </div>
+    )
+  }
+
+  _renderDropdown(inputValue, getItemProps, highlightedIndex, selectedItem) {
+    const items = Array.from(COUNTRIES, x => x.name);
+
+    let results = items.filter(
+      i =>
+        !inputValue ||
+        i.toLowerCase().includes(inputValue.toLowerCase()),
+    );
+
+    if (results.length > 0) {
+      return (
+        results
+        .map((item, index) => {
+          if (index < 6) {
+            return (
+              <div
+                {...getItemProps({item})}
+                key={item}
+                style={{
+                  backgroundColor:
+                    highlightedIndex === index ? 'gray' : 'white',
+                  fontWeight: selectedItem === item ? 'bold' : 'normal',
+                }}
+              >
+                {item}
+              </div>
+            )}
+        })
+      )} else {
+        return this._renderNoResults();
+      }
   }
 }
