@@ -10,11 +10,13 @@ export default class Search extends Component {
     const id = "search-autocomplete";
     const label = "Pick-up Location";
     const placeholder = "city, airport, station, region, district…";
+    const getA11yStatusMessage = "No results found";
     const items = ['Bucharest', 'Contanta', 'Timisoara', 'Galati', 'Braila', 'Iasi'];
 
     return (
       <Downshift
         onChange={this._onChange}
+        getA11yStatusMessage = { ()=> {return getA11yStatusMessage}}
         render={({
           getInputProps,
           getItemProps,
