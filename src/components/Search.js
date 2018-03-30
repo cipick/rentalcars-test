@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Downshift from 'downshift'
+import COUNTRIES from '../stores/COUNTRIES';
 
 export default class Search extends Component {
   _onChange(selectedItem) {
@@ -11,7 +12,7 @@ export default class Search extends Component {
     const label = "Pick-up Location";
     const placeholder = "city, airport, station, region, district…";
     const getA11yStatusMessage = "No results found";
-    const items = ['Bucharest', 'Contanta', 'Timisoara', 'Galati', 'Braila', 'Iasi'];
+    const items = Array.from(COUNTRIES, x => x.name);
 
     return (
       <Downshift
@@ -38,20 +39,23 @@ export default class Search extends Component {
                       i.toLowerCase().includes(inputValue.toLowerCase()),
                   )
                   .map((item, index) => {
-                    return (
-                      <div
-                        {...getItemProps({item})}
-                        key={item}
-                        style={{
-                          backgroundColor:
-                            highlightedIndex === index ? 'gray' : 'white',
-                          fontWeight: selectedItem === item ? 'bold' : 'normal',
-                        }}
-                      >
-                        {item}
-                      </div>
-                    )}
-                  )}
+                    if (index < 6) {
+                      return (
+                        <div
+                          {...getItemProps({item})}
+                          key={item}
+                          style={{
+                            backgroundColor:
+                              highlightedIndex === index ? 'gray' : 'white',
+                            fontWeight: selectedItem === item ? 'bold' : 'normal',
+                          }}
+                        >
+                          {item}
+                        </div>
+                      )}
+                    else
+                      return null;
+                  })}
               </div>
             ) : null}
           </div>
