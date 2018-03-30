@@ -29,7 +29,7 @@ export default class Search extends Component {
           <div>
             <label {...getLabelProps()}>{label}</label>
             <input {...getInputProps({placeholder})} />
-            {isOpen ? (
+            {isOpen && inputValue.length > 1 ? (
               <div style={{border: '1px solid #ccc'}}>
                 {items
                   .filter(
