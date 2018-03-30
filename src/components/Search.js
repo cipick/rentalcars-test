@@ -8,6 +8,7 @@ export default class Search extends Component {
 
 	render() {
     const id = "search-autocomplete";
+    const label = "Pick-up Location";
     const placeholder = "city, airport, station, region, district…";
     const items = ['Bucharest', 'Contanta', 'Timisoara', 'Galati', 'Braila', 'Iasi'];
 
@@ -17,12 +18,14 @@ export default class Search extends Component {
         render={({
           getInputProps,
           getItemProps,
+          getLabelProps,
           isOpen,
           inputValue,
           selectedItem,
           highlightedIndex,
         }) => (
           <div>
+            <label {...getLabelProps()}>{label}</label>
             <input {...getInputProps({placeholder})} />
             {isOpen ? (
               <div style={{border: '1px solid #ccc'}}>
