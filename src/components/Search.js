@@ -31,35 +31,37 @@ export default class Search extends Component {
     const placeholder = "city, airport, station, region, district…";
 
     return (
-      <Downshift
-        onChange={this._onChange}
-        itemToString={this._itemToString}
-        render={({
-          getInputProps,
-          getItemProps,
-          getLabelProps,
-          isOpen,
-          inputValue,
-          selectedItem,
-          highlightedIndex,
-          itemCount
-        }) => (
-          <div>
-            <label {...getLabelProps()}>{label}</label>
-            <input className="Search-input"
-                   {...getInputProps({
-                      onKeyUp: event => {
-                        this.store.search(inputValue);
-                      }, placeholder
-                    })} />
-            {isOpen && inputValue.length > 1 ? (
-              <div style={{border: '1px solid #ccc'}}>
-                {this._renderDropdown(inputValue, getItemProps, highlightedIndex, selectedItem)}
-              </div>
-            ) : null}
-          </div>
-        )}
-      />
+      <div className="search">
+        <Downshift
+          onChange={this._onChange}
+          itemToString={this._itemToString}
+          render={({
+            getInputProps,
+            getItemProps,
+            getLabelProps,
+            isOpen,
+            inputValue,
+            selectedItem,
+            highlightedIndex,
+            itemCount
+          }) => (
+            <div>
+              <label className="search-label" {...getLabelProps()}>{label}</label>
+              <input className="search-input"
+                     {...getInputProps({
+                        onKeyUp: event => {
+                          this.store.search(inputValue);
+                        }, placeholder
+                      })} />
+              {isOpen && inputValue.length > 1 ? (
+                <div style={{border: '1px solid #ccc'}}>
+                  {this._renderDropdown(inputValue, getItemProps, highlightedIndex, selectedItem)}
+                </div>
+              ) : null}
+            </div>
+          )}
+        />
+      </div>
     )
   }
 
@@ -67,9 +69,7 @@ export default class Search extends Component {
     const noResultsText = "No results found";
 
     return (
-      <div style={{
-        backgroundColor: 'white',
-      }}>
+      <div className="search-dropdownItem--disabled">
         {noResultsText}
       </div>
     )
@@ -87,6 +87,7 @@ export default class Search extends Component {
               <div
                 {...getItemProps({item})}
                 key={item.ufi}
+                className="search-dropdownItem"
                 style={{
                   backgroundColor:
                     highlightedIndex === index ? 'gray' : 'white',

@@ -19,10 +19,7 @@ export default class Home extends Component {
 					<Navbar />
 				</header>
 				<main className="container">
-					<Card backgroundColor="orange"
-					 			textColor="black"
-								title="Let’s find your ideal car">
-
+					<Card title="Let’s find your ideal car">
 						<Search />
 					</Card>
 				</main>

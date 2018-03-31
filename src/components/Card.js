@@ -8,7 +8,7 @@ export default class Card extends Component {
     const title = this.props.title;
 
 		return (
-			<div className={`card ${backgroundColor}`}>
+			<div className={`card`}>
         <div className={`card-content ${textColor}-text`}>
           <span className="card-title">{title}</span>
           {children}

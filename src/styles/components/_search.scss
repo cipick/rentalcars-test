@@ -1,0 +1,27 @@
+.search {
+  label.search-label {
+    color: #444;
+    text-shadow: none;
+    font-size: 0.875em;
+  }
+
+  input.search-input {
+    padding: 2% 8% 2% 2%;
+    line-height: 15px;
+    margin: 0;
+    border-radius: 0;
+    background: #FEFEFE;
+    border-color: #a9a9a9;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 0.813em;
+    box-sizing: inherit;
+  }
+  .search-dropdownItem{
+    padding: 2px 5px;
+  }
+  .search-dropdownItem--disabled {
+    background: #ffffff;
+    font-style: italic;
+  }
+}
