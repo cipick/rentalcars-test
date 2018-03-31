@@ -1,10 +1,28 @@
 import React, { Component } from "react";
+import { inject, observer } from "mobx-react";
 import Downshift from 'downshift'
-import COUNTRIES from '../stores/COUNTRIES';
+import DataWrapper from "./DataWrapper";
 
+@DataWrapper
+@observer
 export default class Search extends Component {
+  constructor(props) {
+		super(props);
+		this.store = this.props.store.appState;
+
+    this._onChange = this._onChange.bind(this);
+  }
+
+  _itemToString(item){
+    if(item && item.region){
+      return `${item.name}, ${item.region}, ${item.country}`;
+    } else {
+      return `${item.name}, ${item.country}`;
+    }
+  }
+
   _onChange(selectedItem) {
-    console.log(selectedItem);
+    this.store.setSelectedItem(selectedItem);
   }
 
 	render() {
@@ -15,6 +33,7 @@ export default class Search extends Component {
     return (
       <Downshift
         onChange={this._onChange}
+        itemToString={this._itemToString}
         render={({
           getInputProps,
           getItemProps,
@@ -27,7 +46,12 @@ export default class Search extends Component {
         }) => (
           <div>
             <label {...getLabelProps()}>{label}</label>
-            <input {...getInputProps({placeholder})} />
+            <input className="Search-input"
+                   {...getInputProps({
+                      onKeyUp: event => {
+                        this.store.search(inputValue);
+                      }, placeholder
+                    })} />
             {isOpen && inputValue.length > 1 ? (
               <div style={{border: '1px solid #ccc'}}>
                 {this._renderDropdown(inputValue, getItemProps, highlightedIndex, selectedItem)}
@@ -52,13 +76,7 @@ export default class Search extends Component {
   }
 
   _renderDropdown(inputValue, getItemProps, highlightedIndex, selectedItem) {
-    const items = Array.from(COUNTRIES, x => x.name);
-
-    let results = items.filter(
-      i =>
-        !inputValue ||
-        i.toLowerCase().includes(inputValue.toLowerCase()),
-    );
+    let results = this.store.items;
 
     if (results.length > 0) {
       return (
@@ -68,14 +86,15 @@ export default class Search extends Component {
             return (
               <div
                 {...getItemProps({item})}
-                key={item}
+                key={item.ufi}
                 style={{
                   backgroundColor:
                     highlightedIndex === index ? 'gray' : 'white',
                   fontWeight: selectedItem === item ? 'bold' : 'normal',
+                  borderBottom: '1px solid gray'
                 }}
               >
-                {item}
+                [{item.placeType}] {item.name} <br/> {item.country} {item.region ? `- ${item.region}` : null}
               </div>
             )}
         })

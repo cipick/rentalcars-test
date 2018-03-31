@@ -12,8 +12,7 @@ export default function DataWrapper(WrappedComponent) {
 		}
 
 		componentDidMount() {
-			let pathname = this.props.url;
-			this.store.fetchData(pathname);
+			this.store.clearItems();
 		}
 
 		componentWillUnmount() {
